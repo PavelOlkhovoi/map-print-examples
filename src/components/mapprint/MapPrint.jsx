@@ -14,6 +14,8 @@ const BrowserPrintControl = () => {
         })
         .addTo(map);
 
+      map.invalidateSize({ reset: true, animate: false, pan: false });
+
       const polyline = L.polyline(
         [
           [51.046, 7.6],

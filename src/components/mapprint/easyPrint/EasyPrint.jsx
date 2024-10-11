@@ -1,17 +1,16 @@
 import React, { useEffect, useContext } from "react";
-import "leaflet-easyprint";
 import { TopicMapContext } from "react-cismap/contexts/TopicMapContextProvider";
+import "leaflet-easyprint";
 
 const EasyPrintControl = () => {
   const { routedMapRef } = useContext(TopicMapContext);
   useEffect(() => {
     if (routedMapRef && L.easyPrint) {
       const map = routedMapRef.leafletMap.leafletElement;
-
       const browserControl = L.easyPrint({
         title: "Easy print",
         position: "topleft",
-        sizeModes: ["A4Portrait", "A4Landscape"],
+        sizeModes: ["A4Portrait"],
       }).addTo(map);
 
       return () => {
