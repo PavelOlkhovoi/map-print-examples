@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from "react";
-import "leaflet/dist/leaflet.css";
 import "leaflet-easyprint";
 import { TopicMapContext } from "react-cismap/contexts/TopicMapContextProvider";
 
