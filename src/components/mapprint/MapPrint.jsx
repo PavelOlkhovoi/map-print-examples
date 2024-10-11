@@ -11,6 +11,12 @@ const BrowserPrintControl = () => {
       const browserControl = L.control
         .browserPrint({
           position: "topleft",
+          customPrintStyle: {
+            color: "red",
+            dashArray: "5, 10",
+            pane: "customPrintPane",
+          },
+          // debug: true,
         })
         .addTo(map);
 
