@@ -11,40 +11,33 @@ const BrowserPrintControl = () => {
       const browserControl = L.control
         .browserPrint({
           position: "topleft",
-          customPrintStyle: {
-            color: "red",
-            dashArray: "5, 10",
-            pane: "customPrintPane",
-          },
           // debug: true,
         })
         .addTo(map);
 
-      map.invalidateSize({ reset: true, animate: false, pan: false });
+      // const polyline = L.polyline(
+      //   [
+      //     [51.046, 7.6],
+      //     [51.05, 7.61],
+      //     [51.04, 7.62],
+      //   ],
+      //   { color: "blue" }
+      // ).addTo(map);
 
-      const polyline = L.polyline(
-        [
-          [51.046, 7.6],
-          [51.05, 7.61],
-          [51.04, 7.62],
-        ],
-        { color: "blue" }
-      ).addTo(map);
-
-      const polygon = L.polygon(
-        [
-          [51.046, 7.64],
-          [51.046, 7.67],
-          [51.05, 7.67],
-          [51.05, 7.64],
-        ],
-        { color: "red" }
-      ).addTo(map);
+      // const polygon = L.polygon(
+      //   [
+      //     [51.046, 7.64],
+      //     [51.046, 7.67],
+      //     [51.05, 7.67],
+      //     [51.05, 7.64],
+      //   ],
+      //   { color: "red" }
+      // ).addTo(map);
 
       return () => {
         map.removeControl(browserControl);
-        map.removeLayer(polyline);
-        map.removeLayer(polygon);
+        // map.removeLayer(polyline);
+        // map.removeLayer(polygon);
       };
     }
   }, [routedMapRef]);
