@@ -309,7 +309,7 @@ L.BrowserPrint = L.Class.extend({
 
     if (options.invalidateBounds) {
       overlay.map.fitBounds(origins.bounds, overlay.map.options);
-      // overlay.map.invalidateSize({reset: true, animate: false, pan: false});
+      overlay.map.invalidateSize({ reset: true, animate: false, pan: false });
     } else {
       overlay.map.setView(this._map.getCenter(), this._map.getZoom());
     }
@@ -439,7 +439,7 @@ L.BrowserPrint = L.Class.extend({
       document.title = origins.documentTitle;
     }
 
-    this._map.invalidateSize({ reset: true, animate: false, pan: false });
+    // this._map.invalidateSize({ reset: true, animate: false, pan: false });
     this._map.isPrinting = false;
   },
 

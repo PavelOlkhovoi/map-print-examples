@@ -20,6 +20,19 @@ const EasyPrintControl = () => {
         sizeModes: ["A4Portrait", "A4Landscape", customSize],
       }).addTo(map);
 
+      if (
+        typeof SVGElement !== "undefined" &&
+        SVGElement.prototype.hasOwnProperty("className")
+      ) {
+        Object.defineProperty(SVGElement.prototype, "className", {
+          set: function (value) {
+            this.setAttribute("class", value);
+          },
+          get: function () {
+            return this.getAttribute("class");
+          },
+        });
+      }
       return () => {
         map.removeControl(browserControl);
       };
