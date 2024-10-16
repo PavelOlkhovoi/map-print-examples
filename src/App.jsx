@@ -8,13 +8,6 @@ function App() {
   };
   return (
     <TopicMapContextProvider featureCollectionEnabled={false}>
-      {/* <button
-        onClick={handlePrint}
-        style={{ position: "absolute", top: "0", left: "0", zIndex: 50000 }}
-      >
-        {" "}
-        Print
-      </button> */}
       <TopicMapComponent>
         <BrowserPrintControl />
         <EasyPrintControl />
