@@ -1,5 +1,11 @@
 import React, { useContext, useEffect } from "react";
-import "leaflet.browser.print/dist/leaflet.browser.print.js";
+// import "leaflet.browser.print/dist/leaflet.browser.print.js";
+import "./leaflet.browser.print";
+import "./leaflet.browser.print.control";
+import "./leaflet.browser.print.helpers";
+import "./leaflet.browser.print.modes";
+import "./leaflet.browser.print.sizes";
+import "./leaflet.browser.print.utils";
 import { TopicMapContext } from "react-cismap/contexts/TopicMapContextProvider";
 
 const BrowserPrintControl = () => {

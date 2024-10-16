@@ -7,7 +7,7 @@ function App() {
     window.print();
   };
   return (
-    <TopicMapContextProvider featureCollectionEnabled={false}>
+    <TopicMapContextProvider>
       <TopicMapComponent>
         <BrowserPrintControl />
         <EasyPrintControl />
