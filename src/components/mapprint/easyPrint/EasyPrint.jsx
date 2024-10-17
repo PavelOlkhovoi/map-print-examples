@@ -1,9 +1,15 @@
-import React, { useEffect, useContext } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { TopicMapContext } from "react-cismap/contexts/TopicMapContextProvider";
 import "leaflet-easyprint";
 
 const EasyPrintControl = () => {
   const { routedMapRef } = useContext(TopicMapContext);
+  const printControlRef = useRef(null);
+  const handlePrintClick = () => {
+    if (printControlRef.current && printControlRef.current.printMap) {
+      printControlRef.current.printMap("A4Portrait");
+    }
+  };
   useEffect(() => {
     if (routedMapRef && L.easyPrint) {
       const map = routedMapRef.leafletMap.leafletElement;
@@ -14,7 +20,7 @@ const EasyPrintControl = () => {
         className: "a3CssClass",
         tooltip: "A custom A3 size",
       };
-      const browserControl = L.easyPrint({
+      printControlRef.current = L.easyPrint({
         title: "Easy print",
         position: "topleft",
         sizeModes: ["A4Portrait", "A4Landscape", customSize],
@@ -34,12 +40,21 @@ const EasyPrintControl = () => {
         });
       }
       return () => {
-        map.removeControl(browserControl);
+        map.removeControl(printControlRef.current);
       };
     }
   }, [routedMapRef]);
 
-  return null;
+  return (
+    <div>
+      <button
+        onClick={handlePrintClick}
+        style={{ position: "absolute", zIndex: 1600 }}
+      >
+        Print A4 Portrait
+      </button>
+    </div>
+  );
 };
 
 export default EasyPrintControl;
