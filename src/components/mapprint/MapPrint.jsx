@@ -1,27 +1,14 @@
-import React, { useContext, useEffect } from "react";
-// import "leaflet.browser.print/dist/leaflet.browser.print.js";
-import "./leaflet.browser.print";
-import "./leaflet.browser.print.control";
-import "./leaflet.browser.print.helpers";
-import "./leaflet.browser.print.modes";
-import "./leaflet.browser.print.sizes";
-import "./leaflet.browser.print.utils";
+import { useContext, useEffect } from "react";
 import { TopicMapContext } from "react-cismap/contexts/TopicMapContextProvider";
 
 const BrowserPrintControl = () => {
   const { routedMapRef } = useContext(TopicMapContext);
 
   useEffect(() => {
-    if (routedMapRef && L.control.browserPrint) {
+    if (routedMapRef) {
       const map = routedMapRef.leafletMap.leafletElement;
-      const browserControl = L.control
-        .browserPrint({
-          position: "topleft",
-          // debug: true,
-        })
-        .addTo(map);
 
-      const polyline = L.polyline(
+      L.polyline(
         [
           [51.046, 7.6],
           [51.05, 7.61],
@@ -30,7 +17,7 @@ const BrowserPrintControl = () => {
         { color: "blue" }
       ).addTo(map);
 
-      const polygon = L.polygon(
+      L.polygon(
         [
           [51.046, 7.64],
           [51.046, 7.67],
@@ -40,9 +27,9 @@ const BrowserPrintControl = () => {
         { color: "red" }
       ).addTo(map);
 
-      return () => {
-        map.removeControl(browserControl);
-      };
+      // return () => {
+      //   map.removeControl(browserControl);
+      // };
     }
   }, [routedMapRef]);
 
