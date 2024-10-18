@@ -7,17 +7,17 @@ const EasyPrintControl = () => {
   const [print, setPrint] = useState(null);
   const PortraitPrint = () => {
     if (print) {
-      print.printMap("A4Portrait page", "MyFileName");
+      print.printMap("A4Portrait page");
     }
   };
   const LandscapePrint = () => {
     if (print) {
-      print.printMap("A4Landscape page", "MyFileName");
+      print.printMap("A4Landscape page");
     }
   };
   const customPrint = () => {
     if (print) {
-      print.printMap("Custom", "MyFileName");
+      print.printMap("a3CssClass");
     }
   };
   useEffect(() => {
@@ -34,7 +34,8 @@ const EasyPrintControl = () => {
         title: "Easy print",
         // position: "topleft",
         sizeModes: ["A4Portrait", "A4Landscape", customSize],
-        hideControlContainer: true,
+        hideClasses: ["print-control"],
+        hidden: true,
       }).addTo(map);
 
       setPrint(printControl);
@@ -69,9 +70,15 @@ const EasyPrintControl = () => {
         gap: 4,
       }}
     >
-      <button onClick={PortraitPrint}>Portrait</button>
-      <button onClick={LandscapePrint}>Portrait</button>
-      <button onClick={customPrint}>Custom</button>
+      <button onClick={PortraitPrint} className="print-control">
+        Portrait
+      </button>
+      <button onClick={LandscapePrint} className="print-control">
+        Landscaoe
+      </button>
+      <button onClick={customPrint} className="print-control">
+        Custom
+      </button>
     </div>
   );
 };
