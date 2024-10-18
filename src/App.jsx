@@ -1,15 +1,12 @@
 import TopicMapContextProvider from "react-cismap/contexts/TopicMapContextProvider";
 import TopicMapComponent from "react-cismap/topicmaps/TopicMapComponent";
-import BrowserPrintControl from "./components/mapprint/MapPrint";
+import Shapes from "./components/mapprint/MapPrint";
 import EasyPrintControl from "./components/mapprint/easyPrint/EasyPrint";
 function App() {
-  const handlePrint = () => {
-    window.print();
-  };
   return (
     <TopicMapContextProvider>
       <TopicMapComponent>
-        <BrowserPrintControl />
+        <Shapes />
         <EasyPrintControl />
       </TopicMapComponent>
     </TopicMapContextProvider>

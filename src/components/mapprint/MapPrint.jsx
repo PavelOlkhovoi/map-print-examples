@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { TopicMapContext } from "react-cismap/contexts/TopicMapContextProvider";
 
-const BrowserPrintControl = () => {
+const Shapes = () => {
   const { routedMapRef } = useContext(TopicMapContext);
 
   useEffect(() => {
@@ -26,14 +26,10 @@ const BrowserPrintControl = () => {
         ],
         { color: "red" }
       ).addTo(map);
-
-      // return () => {
-      //   map.removeControl(browserControl);
-      // };
     }
   }, [routedMapRef]);
 
   return null;
 };
 
-export default BrowserPrintControl;
+export default Shapes;
