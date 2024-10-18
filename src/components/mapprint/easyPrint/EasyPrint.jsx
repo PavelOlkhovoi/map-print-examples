@@ -5,28 +5,36 @@ import "leaflet-easyprint";
 const EasyPrintControl = () => {
   const { routedMapRef } = useContext(TopicMapContext);
   const [print, setPrint] = useState(null);
-  const handlePrintClick = () => {
+  const PortraitPrint = () => {
     if (print) {
-      console.log(print);
       print.printMap("A4Portrait page", "MyFileName");
+    }
+  };
+  const LandscapePrint = () => {
+    if (print) {
+      print.printMap("A4Landscape page", "MyFileName");
+    }
+  };
+  const customPrint = () => {
+    if (print) {
+      print.printMap("Custom", "MyFileName");
     }
   };
   useEffect(() => {
     if (routedMapRef && L.easyPrint) {
       const map = routedMapRef.leafletMap.leafletElement;
       const customSize = {
-        name: "A3Landscape",
+        name: "Custom",
         width: 1684,
         height: 1190,
         className: "a3CssClass",
         tooltip: "A custom A3 size",
-        exportOnly: true,
-        hideControlContainer: true,
       };
       const printControl = L.easyPrint({
         title: "Easy print",
-        position: "topleft",
+        // position: "topleft",
         sizeModes: ["A4Portrait", "A4Landscape", customSize],
+        hideControlContainer: true,
       }).addTo(map);
 
       setPrint(printControl);
@@ -51,13 +59,19 @@ const EasyPrintControl = () => {
   }, [routedMapRef]);
 
   return (
-    <div>
-      <button
-        onClick={handlePrintClick}
-        style={{ position: "absolute", zIndex: 1600 }}
-      >
-        Print A4 Portrait
-      </button>
+    <div
+      style={{
+        position: "absolute",
+        zIndex: 1600,
+        top: 174,
+        left: 12,
+        display: "flex",
+        gap: 4,
+      }}
+    >
+      <button onClick={PortraitPrint}>Portrait</button>
+      <button onClick={LandscapePrint}>Portrait</button>
+      <button onClick={customPrint}>Custom</button>
     </div>
   );
 };
