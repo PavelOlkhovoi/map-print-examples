@@ -75,7 +75,7 @@ export const easyPrintExtension = {
           plugin.outerContainer
         );
         blankDiv.className = "epHolder";
-        // blankDiv.style.backgroundImage = 'url("' + dataUrl + '")';
+        blankDiv.style.backgroundImage = 'url("' + dataUrl + '")';
         blankDiv.style.position = "absolute";
         blankDiv.style.zIndex = 1011;
         blankDiv.style.display = "initial";
@@ -102,16 +102,18 @@ export const easyPrintExtension = {
     } else {
       this.orientation = "landscape";
     }
-    // this._map.setView(this.originalState.center);
-    // this._map.setZoom(this.originalState.zoom);
+    this._map.setView(this.originalState.center);
+    this._map.setZoom(this.originalState.zoom);
     this._map.invalidateSize();
     if (this.options.tileLayer) {
       this._pausePrint(sizeMode);
     } else {
       this._printOpertion(sizeMode);
+      //this._customPrintOpertion(sizeMode);
     }
   },
   _customPrintOpertion: function (sizemode) {
+    console.log("xxx _customPrintOpertion");
     var plugin = this;
     var widthForExport = this.mapContainer.style.width;
     if (
@@ -130,7 +132,8 @@ export const easyPrintExtension = {
         if (plugin.options.exportOnly) {
           fileSaver.saveAs(blob, plugin.options.filename + ".png");
         } else {
-          plugin._sendToBrowserPrint(dataUrl, plugin.orientation);
+          //   plugin._sendToBrowserPrint(dataUrl, plugin.orientation);
+          plugin._customSendToBrowserPrint(dataUrl, plugin.orientation);
         }
         plugin._toggleControls(true);
         plugin._toggleClasses(plugin.options.hideClasses, true);
@@ -159,5 +162,13 @@ export const easyPrintExtension = {
       .catch(function (error) {
         console.error("Print operation failed", error);
       });
+  },
+  _customSendToBrowserPrint: function (img, orientation) {
+    console.log("xxx _customSendToBrowserPrint");
+    this._page.resizeTo(600, 800);
+    var pageContent = this._createNewWindow(img, orientation, this);
+    this._page.document.body.innerHTML = "";
+    this._page.document.write(pageContent);
+    this._page.document.close();
   },
 };

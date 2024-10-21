@@ -44,6 +44,10 @@ const EasyPrintControl = () => {
         easyPrintExtension._customCreateImagePlaceholder;
       printControl._customResizeAndPrintMap =
         easyPrintExtension._customResizeAndPrintMap;
+      printControl._customPrintOpertion =
+        easyPrintExtension._customPrintOpertion;
+      printControl._customPrintOpertion =
+        easyPrintExtension._customSendToBrowserPrint;
 
       setPrint(printControl);
 
