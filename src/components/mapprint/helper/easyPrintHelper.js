@@ -186,9 +186,10 @@ export const easyPrintExtension = {
         setTimeout('step2()', 10);}
         function step2(){window.print();window.close()}
         </script></head><body onload='step1()'>
-        <img src="` +
+        <div><h1>Header</h1><div>
+        <img class="custom-print-img" src="` +
       img +
-      `" style="display:block; margin:auto;"></body></html>`
+      `" style="display:block; margin:auto; border: 4px solid blue !important; width: 1000px"></body></html>`
     );
   },
 };
