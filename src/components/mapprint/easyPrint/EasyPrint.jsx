@@ -5,67 +5,76 @@ import "leaflet-easyprint";
 const EasyPrintControl = () => {
   const { routedMapRef } = useContext(TopicMapContext);
   const [print, setPrint] = useState(null);
+  const [showPrintSettings, setShowPrintSettings] = useState(false);
 
-  const portraitPrint = () => {
-    if (print) {
-      print.printMap("A4Portrait page");
+  const customPrint = () => {
+    if (print && routedMapRef) {
+      removePrevRec(routedMapRef.leafletMap.leafletElement);
+      setShowPrintSettings(true);
+      print.printMap("a3CssClass");
     }
   };
 
-  const customPrint = () => {
-    if (print) {
-      print.printMap("a3CssClass");
-    }
+  const removePrevRec = (map) => {
+    map.eachLayer((layer) => {
+      if (layer instanceof L.Rectangle) {
+        map.removeLayer(layer);
+      }
+    });
   };
   useEffect(() => {
     if (routedMapRef && L.easyPrint) {
       const map = routedMapRef.leafletMap.leafletElement;
-      const customSize = {
-        name: "Custom",
-        width: 350,
-        height: 495,
-        className: "a3CssClass",
-        tooltip: "A custom A3 size",
-      };
-      const printControl = L.easyPrint({
-        title: "Easy print",
-        // sizeModes: ["A4Portrait", "A4Landscape", customSize],
-        sizeModes: [customSize],
-        hidden: true,
-      }).addTo(map);
+      if (!print) {
+        const customSize = {
+          name: "Custom",
+          width: 350,
+          height: 495,
+          className: "a3CssClass",
+          tooltip: "A custom A3 size",
+        };
+        const printControl = L.easyPrint({
+          title: "Easy print",
+          // sizeModes: ["A4Portrait", "A4Landscape", customSize],
+          sizeModes: [customSize],
+          hidden: true,
+        }).addTo(map);
 
-      setPrint(printControl);
+        setPrint(printControl);
+      }
 
       const addRectangleToMap = () => {
-        map.eachLayer((layer) => {
-          if (layer instanceof L.Rectangle) {
-            map.removeLayer(layer);
-          }
-        });
+        if (!showPrintSettings) {
+          removePrevRec(map);
 
-        const pixelWidth = 350;
-        const pixelHeight = 495;
+          const pixelWidth = 350;
+          const pixelHeight = 495;
 
-        const mapCenter = map.getCenter();
-        const centerPoint = map.latLngToLayerPoint(mapCenter);
-        const topLeftPoint = L.point(
-          centerPoint.x - pixelWidth / 2,
-          centerPoint.y - pixelHeight / 2
-        );
-        const bottomRightPoint = L.point(
-          centerPoint.x + pixelWidth / 2,
-          centerPoint.y + pixelHeight / 2
-        );
-        const topLeftLatLng = map.layerPointToLatLng(topLeftPoint);
-        const bottomRightLatLng = map.layerPointToLatLng(bottomRightPoint);
-        const rectangleBounds = [topLeftLatLng, bottomRightLatLng];
-        L.rectangle(rectangleBounds, {
-          color: "black",
-          weight: 1,
-        }).addTo(map);
+          const mapCenter = map.getCenter();
+          const centerPoint = map.latLngToLayerPoint(mapCenter);
+          const topLeftPoint = L.point(
+            centerPoint.x - pixelWidth / 2,
+            centerPoint.y - pixelHeight / 2
+          );
+          const bottomRightPoint = L.point(
+            centerPoint.x + pixelWidth / 2,
+            centerPoint.y + pixelHeight / 2
+          );
+          const topLeftLatLng = map.layerPointToLatLng(topLeftPoint);
+          const bottomRightLatLng = map.layerPointToLatLng(bottomRightPoint);
+          const rectangleBounds = [topLeftLatLng, bottomRightLatLng];
+          L.rectangle(rectangleBounds, {
+            color: "black",
+            weight: 1,
+          }).addTo(map);
+        } else {
+          removePrevRec(map);
+        }
       };
 
-      addRectangleToMap();
+      if (!showPrintSettings) {
+        addRectangleToMap();
+      }
 
       map.on("zoom", addRectangleToMap);
       map.on("move", () => {
@@ -86,10 +95,12 @@ const EasyPrintControl = () => {
         });
       }
       return () => {
-        map.removeControl(printControl);
+        if (print) {
+          map.removeControl(print);
+        }
       };
     }
-  }, [routedMapRef]);
+  }, [routedMapRef, showPrintSettings]);
 
   return (
     <div
@@ -102,7 +113,9 @@ const EasyPrintControl = () => {
         gap: 4,
       }}
     >
-      <button onClick={customPrint}>Custom</button>
+      <button onClick={customPrint} className="print-btn">
+        Custom
+      </button>
     </div>
   );
 };
