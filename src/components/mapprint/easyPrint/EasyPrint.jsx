@@ -1,6 +1,7 @@
 import { useEffect, useContext, useState } from "react";
 import { TopicMapContext } from "react-cismap/contexts/TopicMapContextProvider";
 import "leaflet-easyprint";
+import { easyPrintExtension } from "../helper/easyPrintHelper";
 
 const EasyPrintControl = () => {
   const { routedMapRef } = useContext(TopicMapContext);
@@ -11,7 +12,7 @@ const EasyPrintControl = () => {
     if (print && routedMapRef) {
       removePrevRec(routedMapRef.leafletMap.leafletElement);
       setShowPrintSettings(true);
-      print.printMap("a3CssClass");
+      print.customPrintMap("a3CssClass");
     }
   };
 
@@ -34,10 +35,15 @@ const EasyPrintControl = () => {
       };
       const printControl = L.easyPrint({
         title: "Easy print",
-        // sizeModes: ["A4Portrait", "A4Landscape", customSize],
         sizeModes: [customSize],
         hidden: true,
       }).addTo(map);
+
+      printControl.customPrintMap = easyPrintExtension.customPrintMap;
+      printControl._customCreateImagePlaceholder =
+        easyPrintExtension._customCreateImagePlaceholder;
+      printControl._customResizeAndPrintMap =
+        easyPrintExtension._customResizeAndPrintMap;
 
       setPrint(printControl);
 
