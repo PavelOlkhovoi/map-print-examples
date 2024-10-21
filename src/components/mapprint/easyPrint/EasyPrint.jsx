@@ -78,8 +78,8 @@ const EasyPrintControl = () => {
       map.on("move", () => {
         addRectangleToMap();
       });
+      map.on("easyPrint-start", () => {});
       map.on("easyPrint-finished", () => {
-        console.log("xxx easyPrint-finished");
         setShowPrintSettings(false);
       });
 
