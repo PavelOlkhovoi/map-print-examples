@@ -1,4 +1,5 @@
 import domtoimage from "dom-to-image";
+import fileSaver from "file-saver";
 
 export const easyPrintExtension = {
   customPrintMap: function (event, filename) {
@@ -58,7 +59,6 @@ export const easyPrintExtension = {
     this._customCreateImagePlaceholder(sizeMode);
   },
   _customCreateImagePlaceholder: function (sizeMode) {
-    console.log("xxx my custom image placeholder");
     var plugin = this;
     domtoimage
       .toPng(this.mapContainer, {
@@ -68,18 +68,21 @@ export const easyPrintExtension = {
       .then(function (dataUrl) {
         plugin.blankDiv = document.createElement("div");
         var blankDiv = plugin.blankDiv;
+        var header = document.createElement("h1");
+        blankDiv.appendChild(header);
         plugin.outerContainer.parentElement.insertBefore(
           blankDiv,
           plugin.outerContainer
         );
         blankDiv.className = "epHolder";
-        blankDiv.style.backgroundImage = 'url("' + dataUrl + '")';
+        // blankDiv.style.backgroundImage = 'url("' + dataUrl + '")';
         blankDiv.style.position = "absolute";
         blankDiv.style.zIndex = 1011;
         blankDiv.style.display = "initial";
         blankDiv.style.width = plugin.originalState.mapWidth;
         blankDiv.style.height = plugin.originalState.mapHeight;
         // plugin._resizeAndPrintMap(sizeMode);
+        console.log("xxx blankDiv", blankDiv);
         plugin._customResizeAndPrintMap(sizeMode);
       })
       .catch(function (error) {
@@ -99,13 +102,62 @@ export const easyPrintExtension = {
     } else {
       this.orientation = "landscape";
     }
-    this._map.setView(this.originalState.center);
-    this._map.setZoom(this.originalState.zoom);
+    // this._map.setView(this.originalState.center);
+    // this._map.setZoom(this.originalState.zoom);
     this._map.invalidateSize();
     if (this.options.tileLayer) {
       this._pausePrint(sizeMode);
     } else {
       this._printOpertion(sizeMode);
     }
+  },
+  _customPrintOpertion: function (sizemode) {
+    var plugin = this;
+    var widthForExport = this.mapContainer.style.width;
+    if (
+      (this.originalState.widthWasAuto && sizemode === "CurrentSize") ||
+      (this.originalState.widthWasPercentage && sizemode === "CurrentSize")
+    ) {
+      widthForExport = this.originalState.mapWidth;
+    }
+    domtoimage
+      .toPng(plugin.mapContainer, {
+        width: parseInt(widthForExport),
+        height: parseInt(plugin.mapContainer.style.height.replace("px")),
+      })
+      .then(function (dataUrl) {
+        var blob = plugin._dataURItoBlob(dataUrl);
+        if (plugin.options.exportOnly) {
+          fileSaver.saveAs(blob, plugin.options.filename + ".png");
+        } else {
+          plugin._sendToBrowserPrint(dataUrl, plugin.orientation);
+        }
+        plugin._toggleControls(true);
+        plugin._toggleClasses(plugin.options.hideClasses, true);
+
+        if (plugin.outerContainer) {
+          if (plugin.originalState.widthWasAuto) {
+            plugin.mapContainer.style.width = "auto";
+          } else if (plugin.originalState.widthWasPercentage) {
+            plugin.mapContainer.style.width =
+              plugin.originalState.percentageWidth;
+          } else {
+            plugin.mapContainer.style.width = plugin.originalState.mapWidth;
+          }
+          plugin.mapContainer.style.height = plugin.originalState.mapHeight;
+          plugin._removeOuterContainer(
+            plugin.mapContainer,
+            plugin.outerContainer,
+            plugin.blankDiv
+          );
+          plugin._map.invalidateSize();
+          plugin._map.setView(plugin.originalState.center);
+          plugin._map.setZoom(plugin.originalState.zoom);
+        }
+        plugin._map.fire("easyPrint-finished");
+      })
+      .catch(function (error) {
+        console.error("Print operation failed", error);
+      });
   },
 };
