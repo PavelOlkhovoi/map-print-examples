@@ -54,7 +54,6 @@ export const easyPrintExtension = {
     if (this.originalState.widthWasAuto) {
       this.outerContainer.style.width = this.originalState.mapWidth;
     }
-    console.log("xxx my custom print");
     // this._createImagePlaceholder(sizeMode);
     this._customCreateImagePlaceholder(sizeMode);
   },
@@ -82,7 +81,6 @@ export const easyPrintExtension = {
         blankDiv.style.width = plugin.originalState.mapWidth;
         blankDiv.style.height = plugin.originalState.mapHeight;
         // plugin._resizeAndPrintMap(sizeMode);
-        console.log("xxx blankDiv", blankDiv);
         plugin._customResizeAndPrintMap(sizeMode);
       })
       .catch(function (error) {
@@ -113,7 +111,6 @@ export const easyPrintExtension = {
     }
   },
   _customPrintOpertion: function (sizemode) {
-    console.log("xxx _customPrintOpertion");
     var plugin = this;
     var widthForExport = this.mapContainer.style.width;
     if (
@@ -164,7 +161,6 @@ export const easyPrintExtension = {
       });
   },
   _customSendToBrowserPrint: function (img, orientation) {
-    console.log("xxx _customSendToBrowserPrint");
     this._page.resizeTo(600, 800);
     // var pageContent = this._createNewWindow(img, orientation, this);
     var pageContent = this._customCreateNewWindow(img, orientation, this);
@@ -173,7 +169,6 @@ export const easyPrintExtension = {
     this._page.document.close();
   },
   _customCreateNewWindow: function (img, orientation, plugin) {
-    console.log("xxx _customCreateNewWindow");
     return (
       `<html><head>
         <style>@media print {
@@ -189,7 +184,7 @@ export const easyPrintExtension = {
         <div><h1>Header</h1><div>
         <img class="custom-print-img" src="` +
       img +
-      `" style="display:block; margin:auto; border: 4px solid blue !important; width: 1000px"></body></html>`
+      `" style="display:block; margin:auto; width: 1000px"></body></html>`
     );
   },
 };
