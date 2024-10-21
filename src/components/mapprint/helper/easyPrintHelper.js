@@ -166,9 +166,29 @@ export const easyPrintExtension = {
   _customSendToBrowserPrint: function (img, orientation) {
     console.log("xxx _customSendToBrowserPrint");
     this._page.resizeTo(600, 800);
-    var pageContent = this._createNewWindow(img, orientation, this);
+    // var pageContent = this._createNewWindow(img, orientation, this);
+    var pageContent = this._customCreateNewWindow(img, orientation, this);
     this._page.document.body.innerHTML = "";
     this._page.document.write(pageContent);
     this._page.document.close();
+  },
+  _customCreateNewWindow: function (img, orientation, plugin) {
+    console.log("xxx _customCreateNewWindow");
+    return (
+      `<html><head>
+        <style>@media print {
+          img { max-width: 98%!important; max-height: 98%!important; }
+          @page { size: ` +
+      orientation +
+      `;}}
+        </style>
+        <script>function step1(){
+        setTimeout('step2()', 10);}
+        function step2(){window.print();window.close()}
+        </script></head><body onload='step1()'>
+        <img src="` +
+      img +
+      `" style="display:block; margin:auto;"></body></html>`
+    );
   },
 };
