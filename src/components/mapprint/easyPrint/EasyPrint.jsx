@@ -25,23 +25,21 @@ const EasyPrintControl = () => {
   useEffect(() => {
     if (routedMapRef && L.easyPrint) {
       const map = routedMapRef.leafletMap.leafletElement;
-      if (!print) {
-        const customSize = {
-          name: "Custom",
-          width: 350,
-          height: 495,
-          className: "a3CssClass",
-          tooltip: "A custom A3 size",
-        };
-        const printControl = L.easyPrint({
-          title: "Easy print",
-          // sizeModes: ["A4Portrait", "A4Landscape", customSize],
-          sizeModes: [customSize],
-          hidden: true,
-        }).addTo(map);
+      const customSize = {
+        name: "Custom",
+        width: 350,
+        height: 495,
+        className: "a3CssClass",
+        tooltip: "A custom A3 size",
+      };
+      const printControl = L.easyPrint({
+        title: "Easy print",
+        // sizeModes: ["A4Portrait", "A4Landscape", customSize],
+        sizeModes: [customSize],
+        hidden: true,
+      }).addTo(map);
 
-        setPrint(printControl);
-      }
+      setPrint(printControl);
 
       const addRectangleToMap = () => {
         if (!showPrintSettings) {
@@ -80,6 +78,10 @@ const EasyPrintControl = () => {
       map.on("move", () => {
         addRectangleToMap();
       });
+      map.on("easyPrint-finished", () => {
+        console.log("xxx easyPrint-finished");
+        setShowPrintSettings(false);
+      });
 
       if (
         typeof SVGElement !== "undefined" &&
@@ -114,7 +116,7 @@ const EasyPrintControl = () => {
       }}
     >
       <button onClick={customPrint} className="print-btn">
-        Custom
+        Print
       </button>
     </div>
   );
