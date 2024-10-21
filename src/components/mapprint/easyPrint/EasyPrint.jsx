@@ -37,6 +37,7 @@ const EasyPrintControl = () => {
         title: "Easy print",
         sizeModes: [customSize],
         hidden: true,
+        hideClasses: ["print-btn"],
       }).addTo(map);
 
       printControl.customPrintMap = easyPrintExtension.customPrintMap;
