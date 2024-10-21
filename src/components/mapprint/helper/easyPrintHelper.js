@@ -108,8 +108,8 @@ export const easyPrintExtension = {
     if (this.options.tileLayer) {
       this._pausePrint(sizeMode);
     } else {
-      this._printOpertion(sizeMode);
-      //this._customPrintOpertion(sizeMode);
+      //   this._printOpertion(sizeMode);
+      this._customPrintOpertion(sizeMode);
     }
   },
   _customPrintOpertion: function (sizemode) {
