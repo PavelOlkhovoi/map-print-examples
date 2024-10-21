@@ -87,7 +87,6 @@ export const easyPrintExtension = {
       });
   },
   _customResizeAndPrintMap: function (sizeMode) {
-    console.log("xxx my custom _customResizeAndPrintMap");
     this.outerContainer.style.opacity = 0;
     var pageSize = this.options.sizeModes.filter(function (item) {
       return item.className.indexOf(sizeMode) > -1;
@@ -95,7 +94,7 @@ export const easyPrintExtension = {
     pageSize = pageSize[0];
     this.mapContainer.style.width = pageSize.width + "px";
     this.mapContainer.style.height = pageSize.height + "px";
-    if (this.mapContainer.style.width > this.mapContainer.style.height) {
+    if (this.mapContainer.style.width < this.mapContainer.style.height) {
       this.orientation = "portrait";
     } else {
       this.orientation = "landscape";
