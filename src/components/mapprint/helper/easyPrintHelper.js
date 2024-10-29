@@ -50,7 +50,8 @@ export const easyPrintExtension = {
     if (sizeMode === "CurrentSize") {
       return this._printOpertion(sizeMode);
     }
-    this.outerContainer = this._createOuterContainer(this.mapContainer);
+    // this.outerContainer = this._createOuterContainer(this.mapContainer);
+    this.outerContainer = this._customCreateOuterContainer(this.mapContainer);
     if (this.originalState.widthWasAuto) {
       this.outerContainer.style.width = this.originalState.mapWidth;
     }
@@ -67,20 +68,18 @@ export const easyPrintExtension = {
       .then(function (dataUrl) {
         plugin.blankDiv = document.createElement("div");
         var blankDiv = plugin.blankDiv;
-        var header = document.createElement("h1");
-        blankDiv.appendChild(header);
         plugin.outerContainer.parentElement.insertBefore(
           blankDiv,
           plugin.outerContainer
         );
         blankDiv.className = "epHolder";
-        blankDiv.style.backgroundImage = 'url("' + dataUrl + '")';
+        // blankDiv.style.backgroundImage = 'url("' + dataUrl + '")';
         blankDiv.style.position = "absolute";
         blankDiv.style.zIndex = 1011;
         blankDiv.style.display = "initial";
         blankDiv.style.width = plugin.originalState.mapWidth;
         blankDiv.style.height = plugin.originalState.mapHeight;
-        // plugin._resizeAndPrintMap(sizeMode);
+        plugin._resizeAndPrintMap(sizeMode);
         plugin._customResizeAndPrintMap(sizeMode);
       })
       .catch(function (error) {
@@ -161,7 +160,7 @@ export const easyPrintExtension = {
       });
   },
   _customSendToBrowserPrint: function (img, orientation) {
-    this._page.resizeTo(600, 800);
+    this._page.resizeTo(1000, 800);
     // var pageContent = this._createNewWindow(img, orientation, this);
     var pageContent = this._customCreateNewWindow(img, orientation, this);
     this._page.document.body.innerHTML = "";
@@ -186,5 +185,16 @@ export const easyPrintExtension = {
       img +
       `" style="display:block; margin:auto; width: 1000px"></body></html>`
     );
+  },
+  _customCreateOuterContainer: function (mapDiv) {
+    var outerContainer = document.createElement("div");
+    mapDiv.parentNode.insertBefore(outerContainer, mapDiv);
+    mapDiv.parentNode.removeChild(mapDiv);
+    outerContainer.appendChild(mapDiv);
+    outerContainer.style.width = mapDiv.style.width;
+    outerContainer.style.height = mapDiv.style.height;
+    outerContainer.style.display = "inline-block";
+    outerContainer.style.overflow = "hidden";
+    return outerContainer;
   },
 };

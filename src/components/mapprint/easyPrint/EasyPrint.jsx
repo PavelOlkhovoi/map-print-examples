@@ -51,6 +51,8 @@ const EasyPrintControl = () => {
         easyPrintExtension._customSendToBrowserPrint;
       printControl._customCreateNewWindow =
         easyPrintExtension._customCreateNewWindow;
+      printControl._customCreateOuterContainer =
+        easyPrintExtension._customCreateOuterContainer;
 
       setPrint(printControl);
 
