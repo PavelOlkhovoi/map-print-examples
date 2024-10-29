@@ -73,7 +73,7 @@ export const easyPrintExtension = {
           plugin.outerContainer
         );
         blankDiv.className = "epHolder";
-        // blankDiv.style.backgroundImage = 'url("' + dataUrl + '")';
+        blankDiv.style.backgroundImage = 'url("' + dataUrl + '")';
         blankDiv.style.position = "absolute";
         blankDiv.style.zIndex = 1011;
         blankDiv.style.display = "initial";
