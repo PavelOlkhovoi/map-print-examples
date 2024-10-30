@@ -1,6 +1,5 @@
 import domtoimage from "dom-to-image";
 import fileSaver from "file-saver";
-
 export const easyPrintExtension = {
   customPrintMap: function (event, filename) {
     if (filename) {
