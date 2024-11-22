@@ -8,69 +8,77 @@ const EasyPrintControl = () => {
   const [print, setPrint] = useState(null);
   const [showPrintSettings, setShowPrintSettings] = useState(false);
 
-  const postData = async () => {
-    const url = "https://mapfish.cismet.de/print/updatePdfMetadata/report.pdf";
+  // const postData = async () => {
+  //   const url = "https://mapfish.cismet.de/print/updatePdfMetadata/report.pdf";
 
-    const data = {
-      layout: "A4 landscape",
-      attributes: {
-        titleAtt: "From Client",
-        keywordsAtt: ["map", "example", "metadata"],
-        subjectAtt: "Mapfish Print Update PDF Metadata Example",
-        map: {
-          center: [801491.21, 6669650.55],
-          scale: 1500,
-          rotation: 0,
-          longitudeFirst: true,
-          layers: [
-            {
-              imageFormat: "image/png",
-              baseURL: "https://geodaten.metropoleruhr.de/spw2/service",
-              customParams: {
-                EXCEPTIONS: "INIMAGE",
-                TRANSPARENT: "true",
-              },
-              layers: ["spw2_light"],
-              type: "WMS",
-              version: "1.3.0",
-            },
-          ],
-          projection: "EPSG:3857",
-          dpi: 200,
-        },
-      },
+  //   const data = {
+  //     layout: "A4 landscape",
+  //     attributes: {
+  //       titleAtt: "From Client",
+  //       keywordsAtt: ["map", "example", "metadata"],
+  //       subjectAtt: "Mapfish Print Update PDF Metadata Example",
+  //       map: {
+  //         center: [801491.21, 6669650.55],
+  //         scale: 1500,
+  //         rotation: 0,
+  //         longitudeFirst: true,
+  //         layers: [
+  //           {
+  //             imageFormat: "image/png",
+  //             baseURL: "https://geodaten.metropoleruhr.de/spw2/service",
+  //             customParams: {
+  //               EXCEPTIONS: "INIMAGE",
+  //               TRANSPARENT: "true",
+  //             },
+  //             layers: ["spw2_light"],
+  //             type: "WMS",
+  //             version: "1.3.0",
+  //           },
+  //         ],
+  //         projection: "EPSG:3857",
+  //         dpi: 200,
+  //       },
+  //     },
+  //   };
+
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     // headers: {
+  //     //   "Content-Type": "application/x-www-form-urlencoded",
+  //     //   "User-Agent":
+  //     //     "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
+  //     //   "X-Requested-With": "XMLHttpRequest",
+  //     //   Origin: "https://mapfish.cismet.de",
+  //     //   Referer: "https://mapfish.cismet.de/",
+  //     // },
+  //     body: JSON.stringify(data),
+  //   });
+
+  //   const responseData = await response.json();
+
+  //   const downloadUrl = "https://mapfish.cismet.de/print/report/";
+  //   const mapFishStatus = "https://mapfish.cismet.de/print/status/";
+
+  //   // const downloadReq = await fetch(downloadUrl + responseData.ref);
+  //   // const downloadReq = await fetch(`${downloadUrl}${responseData.ref}`);
+  //   // const statusReq = await fetch(`${mapFishStatus}${responseData.ref}`);
+
+  //   console.log("xxx response", mapFishStatus + responseData.ref);
+  // };
+  function Print() {
+    var win = window.open("");
+    var img = win.document.createElement("img");
+    img.src = "http://www.w3schools.com/images/w3schoolslogoNEW310113.gif";
+    win.document.body.appendChild(img);
+    img.onload = function () {
+      win.print();
     };
-
-    const response = await fetch(url, {
-      method: "POST",
-      // headers: {
-      //   "Content-Type": "application/x-www-form-urlencoded",
-      //   "User-Agent":
-      //     "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
-      //   "X-Requested-With": "XMLHttpRequest",
-      //   Origin: "https://mapfish.cismet.de",
-      //   Referer: "https://mapfish.cismet.de/",
-      // },
-      body: JSON.stringify(data),
-    });
-
-    const responseData = await response.json();
-
-    const downloadUrl = "https://mapfish.cismet.de/print/report/";
-    const mapFishStatus = "https://mapfish.cismet.de/print/status/";
-
-    // const downloadReq = await fetch(downloadUrl + responseData.ref);
-    // const downloadReq = await fetch(`${downloadUrl}${responseData.ref}`);
-    // const statusReq = await fetch(`${mapFishStatus}${responseData.ref}`);
-
-    console.log("xxx response", mapFishStatus + responseData.ref);
-  };
-
+  }
   const customPrint = () => {
+    Print();
     if (print && routedMapRef) {
-      postData();
-      removePrevRec(routedMapRef.leafletMap.leafletElement);
-      setShowPrintSettings(true);
+      // removePrevRec(routedMapRef.leafletMap.leafletElement);
+      // setShowPrintSettings(true);
       // print.customPrintMap("a3CssClass");
     }
   };
